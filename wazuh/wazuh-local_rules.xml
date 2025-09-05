@@ -1,4 +1,4 @@
-<group name="local,blueTrace,">
+<group name="local,cyberEagle,">
   <!-- SSH brute force from same IP within 5 minutes -->
   <rule id="100100" level="10">
     <if_group>syslog,</if_group>
