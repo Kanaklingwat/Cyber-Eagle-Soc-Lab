@@ -1,0 +1,31 @@
+<group name="local,blueTrace,">
+  <!-- SSH brute force from same IP within 5 minutes -->
+  <rule id="100100" level="10">
+    <if_group>syslog,</if_group>
+    <match>Failed password for</match>
+    <description>SSH brute force suspected (multiple failures from same IP)</description>
+    <frequency>6</frequency>
+    <timeframe>300</timeframe>
+    <same_source_ip/>
+    <group>ssh,authentication_failed,</group>
+  </rule>
+
+  <!-- Suspicious PowerShell keywords -->
+  <rule id="100110" level="12">
+    <if_group>windows,</if_group>
+    <field name="win.system.providerName">Microsoft-Windows-PowerShell</field>
+    <regex>(Invoke-WebRequest|FromBase64String|IEX| -enc )</regex>
+    <description>Suspicious PowerShell usage detected</description>
+    <group>powershell,suspicious,</group>
+  </rule>
+
+  <!-- Linux sudo priv-esc spikes -->
+  <rule id="100120" level="10">
+    <if_group>syslog,</if_group>
+    <regex>(sudo: .*session opened for user root|sudo: pam_unix.*authentication failure)</regex>
+    <description>Potential privilege escalation activity (sudo)</description>
+    <frequency>5</frequency>
+    <timeframe>300</timeframe>
+    <group>sudo,privilege_escalation,</group>
+  </rule>
+</group>

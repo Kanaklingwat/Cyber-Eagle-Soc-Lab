@@ -1,0 +1,10 @@
+# Place in C:\Program Files\Winlogbeat\winlogbeat.yml and edit <MANAGER_IP>
+winlogbeat.event_logs:
+  - name: Security
+  - name: Microsoft-Windows-PowerShell/Operational
+
+output.logstash:
+  hosts: ["<MANAGER_IP>:5044"]
+
+setup.kibana:
+  host: "<MANAGER_IP>:5601"

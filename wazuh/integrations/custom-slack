@@ -1,0 +1,23 @@
+#!/usr/bin/env bash
+# Wazuh custom Slack integration
+# Reads alert JSON from stdin. Requires 'jq' in the manager container.
+
+read INPUT
+WEBHOOK_URL="$(jq -r '.integration_config.hook_url // .integration_config.webhook_url' <<< "$INPUT")"
+if [ -z "$WEBHOOK_URL" ] || [ "$WEBHOOK_URL" = "null" ]; then
+  echo "No Slack webhook URL configured" >&2
+  exit 0
+fi
+
+RULE_ID="$(jq -r '.rule.id' <<< "$INPUT")"
+RULE_DESC="$(jq -r '.rule.description' <<< "$INPUT")"
+LEVEL="$(jq -r '.rule.level' <<< "$INPUT")"
+AGENT_NAME="$(jq -r '.agent.name // "unknown-agent"' <<< "$INPUT")"
+SRCIP="$(jq -r '.data.srcip // .data["source.ip"] // .srcip // empty' <<< "$INPUT")"
+MSG="[$RULE_ID] $RULE_DESC | level: $LEVEL | agent: $AGENT_NAME"
+if [ -n "$SRCIP" ]; then
+  MSG="$MSG | src: $SRCIP"
+fi
+
+payload=$(jq -n --arg text "$MSG" '{text: $text}')
+curl -s -X POST -H 'Content-type: application/json' --data "$payload" "$WEBHOOK_URL" >/dev/null

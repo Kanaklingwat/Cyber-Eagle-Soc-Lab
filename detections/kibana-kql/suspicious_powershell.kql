@@ -1,0 +1,1 @@
+(winlog.channel:"Microsoft-Windows-PowerShell/Operational" or event.provider:"Microsoft-Windows-PowerShell") and (message:*Invoke-WebRequest* or message:*FromBase64String* or message:* -enc * or message:*IEX*)

@@ -1,0 +1,6 @@
+<!-- Place this inside /var/ossec/etc/ossec.conf under <ossec_config> on the manager -->
+<integration>
+  <name>custom-slack</name>
+  <hook_url>https://hooks.slack.com/services/XXX/YYY/ZZZ</hook_url>
+  <rule_id>100100,100110,100120</rule_id>
+</integration>

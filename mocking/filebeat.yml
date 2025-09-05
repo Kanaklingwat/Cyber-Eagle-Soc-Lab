@@ -1,0 +1,8 @@
+# Use this on the ELK manager to ship the sample 'mocking/auth.log' into Logstash
+filebeat.inputs:
+  - type: log
+    enabled: true
+    paths: ["/mnt/data/bluetrace-soc-lab/mocking/*.log"]
+
+output.logstash:
+  hosts: ["localhost:5044"]

@@ -1,0 +1,1 @@
+event.dataset:"system.auth" and (message:"session opened for user root" or message:"sudo:" or message:"authentication failure")

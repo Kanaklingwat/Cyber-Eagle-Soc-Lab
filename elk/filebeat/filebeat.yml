@@ -1,0 +1,11 @@
+# Copy to /etc/filebeat/filebeat.yml on Linux endpoint; edit <MANAGER_IP>
+filebeat.inputs: []
+# Enable the system module separately:
+#   sudo filebeat modules enable system
+
+output.logstash:
+  hosts: ["<MANAGER_IP>:5044"]
+
+# Optional Kibana setup (if reachable)
+setup.kibana:
+  host: "<MANAGER_IP>:5601"

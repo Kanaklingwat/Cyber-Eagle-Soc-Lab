@@ -1,0 +1,41 @@
+version: "3.7"
+services:
+  es:
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.14.0
+    container_name: es
+    environment:
+      - discovery.type=single-node
+      - xpack.security.enabled=false
+      - ES_JAVA_OPTS=-Xms2g -Xmx2g
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    ports:
+      - "9200:9200"
+    networks: [elk]
+
+  kib:
+    image: docker.elastic.co/kibana/kibana:8.14.0
+    container_name: kib
+    environment:
+      - ELASTICSEARCH_HOSTS=http://es:9200
+    ports:
+      - "5601:5601"
+    depends_on: [es]
+    networks: [elk]
+
+  logstash:
+    image: docker.elastic.co/logstash/logstash:8.14.0
+    container_name: logstash
+    command: ["-f","/usr/share/logstash/pipeline/logstash.conf"]
+    ports:
+      - "5044:5044"
+    volumes:
+      - ./pipeline/:/usr/share/logstash/pipeline/
+    depends_on: [es]
+    networks: [elk]
+
+networks:
+  elk:
+    driver: bridge
