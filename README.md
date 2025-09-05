@@ -1,4 +1,4 @@
-# BlueTrace SOC Lab (Wazuh / ELK)
+# Cyber Eagle SOC Lab (Wazuh / ELK)
 
 A mini-SOC you can run on your laptop or a VM. It ingests Windows + Linux logs,
 fires detections (SSH brute force, suspicious PowerShell, sudo spikes), alerts to Slack/email,
